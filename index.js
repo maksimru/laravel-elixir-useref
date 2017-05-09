@@ -2,6 +2,7 @@ var path = require('path');
 var gulp = require('gulp');
 var Elixir = require('laravel-elixir');
 var util = require('gulp-util');
+var gulpIgnore = require('gulp-ignore');
 var $ = require('gulp-load-plugins')();
 
 var Task = Elixir.Task;
@@ -26,6 +27,7 @@ Elixir.extend('useref', function(config, opts) {
             .pipe(useref(opts))
             .pipe(config.minifyJs ? $.if('**/*.js', $.uglify()) : util.noop())
             .pipe(config.minifyCss ? $.if('**/*.css', $.csso()) : util.noop())
+            .pipe(gulpIgnore.exclude('*.php'))
             .pipe(gulp.dest(config.outputDir))
             .pipe($.size());
     });
